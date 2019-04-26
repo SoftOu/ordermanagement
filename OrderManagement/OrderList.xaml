@@ -1,0 +1,39 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OrderManagement"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        x:Class="OrderManagement.OrderList"
+        mc:Ignorable="d"
+        Title="" Height="550" Width="835" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" 
+    WindowState="Normal" ResizeMode="NoResize" HorizontalAlignment="Left" ShowInTaskbar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Manage Order" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+        <dxg:GridControl x:Name="gridOrder" Grid.Row="1" MinHeight="200" SelectionMode="None" ShowLoadingPanel="True">
+            <dxg:GridColumn FieldName="Id" Visible="False" Width="auto" />
+            <dxg:GridColumn FieldName="CustomerId" Visible="False" />
+            <dxg:GridColumn FieldName="ReferenceNumber" Header="Reference Number" Width="auto" />
+            <dxg:GridColumn FieldName="OrderValueString" Header="Order Value" Width="auto" />
+            <dxg:GridColumn FieldName="OrderDateString" Header="Order Date" Width="auto"/>
+            <dxg:GridColumn FieldName="CustomerName"  Width="auto"/>
+            <dxg:GridColumn Width="auto">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <!--CommandParameter="{Binding Path=CustomerId}"-->
+                        <Button Name="btnCustomerView" Content="View" Width="50" ToolTip="View Customer" 
+                                CommandParameter="{Binding Path=CustomerId}"
+                                Click="btnCustomerView_Click"  />
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+
+    </Grid>
+</Window>
