@@ -1,4 +1,5 @@
-﻿using OrderManagement.DataLayer.Services;
+﻿using log4net;
+using OrderManagement.DataLayer.Services;
 using OrderManagement.DataLayer.Services.Interface;
 using OrderManagement.Models;
 using System;
@@ -11,12 +12,14 @@ namespace OrderManagement
     /// </summary>
     public partial class OrderList : Window
     {
+        private readonly ILog log = LogManager.GetLogger("Order");
         public IOrderService _orderService;
         /// <summary>
         /// Order window constructor.
         /// </summary>
         public OrderList()
         {
+            log4net.Config.XmlConfigurator.Configure();
             _orderService = new OrderService();
             InitializeComponent();
             BindOrders();
@@ -29,12 +32,14 @@ namespace OrderManagement
         {
             try
             {
+                log.Info("Calling BindOrders...");
                 gridOrder.ShowLoadingPanel = true;
                 gridOrder.ItemsSource = _orderService.GetOrders();
                 gridOrder.ShowLoadingPanel = false;
             }
             catch (Exception e)
             {
+                log.ErrorFormat("Error in binding orders. Error : {0}", e.Message);
                 MessageBox.Show(e.ToString());
             }
         }
