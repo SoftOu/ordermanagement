@@ -4,6 +4,7 @@ using OrderManagement.DataLayer.Services.Interface;
 using System;
 using System.Linq;
 using System.Windows;
+using System.ComponentModel;
 
 namespace OrderManagement
 {
@@ -61,18 +62,8 @@ namespace OrderManagement
         /// <param name="e"></param>
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
-            {
-                var customer = new CustomerViewModel
-                {
-                    Id = CustomerId,
-                    FirstName = txtFirstName.Text.Trim(),
-                    LastName = txtLastName.Text.Trim()
-                };
-                _customerService.UpdateCustomer(customer);
-                this.Close();
-            }
-
+            //BeforeUpdateRecords();
+            UpdateData();
         }
 
         /// <summary>
@@ -109,6 +100,44 @@ namespace OrderManagement
             }
 
             return isValid;
+        }
+        /// <summary>
+        /// Before update records then show progress bar.
+        /// </summary>
+        private void BeforeUpdateRecords()
+        {
+            BusyIndicator.IsBusy = true;
+            BusyIndicator.BusyContent = "Updating...";
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += (o, a) =>
+            {
+                UpdateData();
+            };
+            worker.RunWorkerCompleted += (o, a) =>
+            {
+                BusyIndicator.IsBusy = false;
+            };
+            worker.RunWorkerAsync();
+        }
+
+        /// <summary>
+        /// update data of customer.
+        /// </summary>
+        private void UpdateData()
+        {
+            if (Validate())
+            {
+                var customer = new CustomerViewModel
+                {
+                    Id = CustomerId,
+                    FirstName = txtFirstName.Text.Trim(),
+                    LastName = txtLastName.Text.Trim()
+                };
+                _customerService.UpdateCustomer(customer);
+                var orderlist = new OrderList();
+                orderlist.Show();
+                this.Close();
+            }
         }
     }
 }

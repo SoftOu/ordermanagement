@@ -75,10 +75,6 @@
       <DependentUpon>OrderManagementEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\CustomerRepository.cs" />
-    <Compile Include="Repository\Interface\ICustomerRepository.cs" />
-    <Compile Include="Repository\Interface\IOrderRepository.cs" />
-    <Compile Include="Repository\OrderRepository.cs" />
     <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\Interface\ICustomerService.cs" />
     <Compile Include="Services\Interface\IOrderService.cs" />

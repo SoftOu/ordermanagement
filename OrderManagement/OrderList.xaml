@@ -6,17 +6,19 @@
         xmlns:local="clr-namespace:OrderManagement"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:WPFTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         x:Class="OrderManagement.OrderList"
         mc:Ignorable="d"
         Title="" Height="550" Width="835" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" 
-    WindowState="Normal" ResizeMode="NoResize" HorizontalAlignment="Left" ShowInTaskbar="False">
+    WindowState="Normal" ResizeMode="NoResize" HorizontalAlignment="Left" ShowInTaskbar="False" ContentRendered="Window_ContentRendered">
+    <WPFTool:BusyIndicator Name="BusyIndicator">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Content="Manage Order" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-        <dxg:GridControl x:Name="gridOrder" Grid.Row="1" MinHeight="200" SelectionMode="None" ShowLoadingPanel="True">
+        <dxg:GridControl x:Name="gridOrder" Grid.Row="1" MinHeight="200" SelectionMode="None">
             <dxg:GridColumn FieldName="Id" Visible="False" Width="auto" />
             <dxg:GridColumn FieldName="CustomerId" Visible="False" />
             <dxg:GridColumn FieldName="ReferenceNumber" Header="Reference Number" Width="auto" />
@@ -36,4 +38,5 @@
         </dxg:GridControl>
 
     </Grid>
+    </WPFTool:BusyIndicator>
 </Window>

@@ -7,9 +7,11 @@
        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
        x:Class="OrderManagement.CustomerView"
+       xmlns:WPFTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="" Height="550" Width="835" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterScreen" 
     WindowState="Normal" ResizeMode="NoResize" Closed="Window_Closed">
+    <WPFTool:BusyIndicator Name="BusyIndicator">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"></ColumnDefinition>
@@ -30,4 +32,5 @@
         <Button Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="20,22,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75" Click="btnCancel_Click" Grid.Column="1"/>
 
     </Grid>
+    </WPFTool:BusyIndicator>
 </Window>

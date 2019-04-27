@@ -3,6 +3,8 @@ using OrderManagement.DataLayer.Services;
 using OrderManagement.DataLayer.Services.Interface;
 using OrderManagement.Models;
 using System;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 
 namespace OrderManagement
@@ -22,7 +24,10 @@ namespace OrderManagement
             log4net.Config.XmlConfigurator.Configure();
             _orderService = new OrderService();
             InitializeComponent();
-            BindOrders();
+            if (gridOrder.IsLoaded == false)
+            {
+                gridOrder.ShowLoadingPanel = true;
+            }
         }
 
         /// <summary>
@@ -33,9 +38,14 @@ namespace OrderManagement
             try
             {
                 log.Info("Calling BindOrders...");
-                gridOrder.ShowLoadingPanel = true;
-                gridOrder.ItemsSource = _orderService.GetOrders();
-                gridOrder.ShowLoadingPanel = false;
+                Thread t = new Thread(() =>
+                {
+                    gridOrder.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                    {
+                        gridOrder.ItemsSource = _orderService.GetOrders();
+                    }));
+                });
+                t.Start();
             }
             catch (Exception e)
             {
@@ -66,6 +76,38 @@ namespace OrderManagement
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        /// <summary>
+        /// After page constructor method finished then this will work for show data with rendaring. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            BeforeLoadData();
+        }
+        /// <summary>
+        /// Before load data in grid that time show progress or loader bar.
+        /// </summary>
+        private void BeforeLoadData()
+        {
+            BusyIndicator.IsBusy = true;
+            BusyIndicator.BusyContent = "Initializing...";
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += (o, a) =>
+            {
+                BindOrders();
+            };
+            worker.RunWorkerCompleted += (o, a) =>
+            {
+                if (gridOrder.IsLoaded == true)
+                {
+                    gridOrder.ShowLoadingPanel = false;
+                }
+                BusyIndicator.IsBusy = false;
+            };
+            worker.RunWorkerAsync();
         }
     }
 }
