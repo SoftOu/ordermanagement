@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.ComponentModel;
+using System.Threading;
 
 namespace OrderManagement
 {
@@ -63,7 +64,23 @@ namespace OrderManagement
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             //BeforeUpdateRecords();
-            UpdateData();
+
+            bool isUpdated;
+            updateCustomer.IsSplashScreenShown = true;
+            
+            isUpdated = UpdateData();
+            //Thread.Sleep(2000);
+            if (isUpdated)
+            {
+                updateCustomer.IsSplashScreenShown = false;
+                var orderlist = new OrderList();
+                orderlist.Show();
+                this.Close();
+            }
+            else
+            {
+                updateCustomer.IsSplashScreenShown = false;
+            }
         }
 
         /// <summary>
@@ -73,6 +90,8 @@ namespace OrderManagement
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            var orderlist = new OrderList();
+            orderlist.Show();
             this.Close();
 
         }
@@ -106,8 +125,8 @@ namespace OrderManagement
         /// </summary>
         private void BeforeUpdateRecords()
         {
-            BusyIndicator.IsBusy = true;
-            BusyIndicator.BusyContent = "Updating...";
+            CustomerBusyIndicator.IsBusy = true;
+            CustomerBusyIndicator.BusyContent = "Updating...";
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += (o, a) =>
             {
@@ -115,7 +134,7 @@ namespace OrderManagement
             };
             worker.RunWorkerCompleted += (o, a) =>
             {
-                BusyIndicator.IsBusy = false;
+                CustomerBusyIndicator.IsBusy = false;
             };
             worker.RunWorkerAsync();
         }
@@ -123,8 +142,9 @@ namespace OrderManagement
         /// <summary>
         /// update data of customer.
         /// </summary>
-        private void UpdateData()
+        private bool UpdateData()
         {
+            bool isUpdated = false;
             if (Validate())
             {
                 var customer = new CustomerViewModel
@@ -133,11 +153,31 @@ namespace OrderManagement
                     FirstName = txtFirstName.Text.Trim(),
                     LastName = txtLastName.Text.Trim()
                 };
-                _customerService.UpdateCustomer(customer);
-                var orderlist = new OrderList();
-                orderlist.Show();
-                this.Close();
+                isUpdated = _customerService.UpdateCustomer(customer);
+                if (isUpdated)
+                {
+                    //var orderlist = new OrderList();
+                    //orderlist.Show();
+                    //this.Close();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+                
+            }
+            else
+            {
+                return false;
             }
         }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            
+        }
+        
     }
 }

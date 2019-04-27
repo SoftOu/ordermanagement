@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OrderManagement"
        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
        x:Class="OrderManagement.CustomerView"
        xmlns:WPFTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="" Height="550" Width="835" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterScreen" 
-    WindowState="Normal" ResizeMode="NoResize" Closed="Window_Closed">
-    <WPFTool:BusyIndicator Name="BusyIndicator">
+    WindowState="Normal" ResizeMode="NoResize" Closed="Window_Closed" ShowInTaskbar="False" ContentRendered="Window_ContentRendered">
+    <WPFTool:BusyIndicator Name="CustomerBusyIndicator">
     <Grid>
+            
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"></ColumnDefinition>
             <ColumnDefinition Width="*"/>
@@ -30,7 +32,25 @@
         <TextBox Name="txtLastName" Grid.Column="1" MaxLines="50" HorizontalAlignment="Left" Height="23" Margin="20,14,0,0" Grid.Row="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272"/>
         <Button Name="btnSave" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="121,22,0,0" Grid.Row="3" VerticalAlignment="Top" Width="81" Click="btnSave_Click"/>
         <Button Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="20,22,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75" Click="btnCancel_Click" Grid.Column="1"/>
-
-    </Grid>
+            <dx:LoadingDecorator x:Name="updateCustomer"
+                                 SplashScreenLocation="CenterWindow"
+                                 OwnerLock="InputOnly"
+                                 IsSplashScreenShown="False">
+                <dx:LoadingDecorator.SplashScreenTemplate>
+                    <DataTemplate>
+                        <dx:WaitIndicator DeferedVisibility="True" Content="Loading...">
+                            <dx:WaitIndicator.ContentTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Please Wait" FontSize="20"></TextBlock>
+                                        <TextBlock Text="{Binding}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </dx:WaitIndicator.ContentTemplate>
+                        </dx:WaitIndicator>
+                    </DataTemplate>
+                </dx:LoadingDecorator.SplashScreenTemplate>
+            </dx:LoadingDecorator>
+        </Grid>
     </WPFTool:BusyIndicator>
 </Window>

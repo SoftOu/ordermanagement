@@ -9,7 +9,7 @@
         xmlns:WPFTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         x:Class="OrderManagement.OrderList"
         mc:Ignorable="d"
-        Title="" Height="550" Width="835" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" 
+        Title="" Height="650" Width="935" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" 
     WindowState="Normal" ResizeMode="NoResize" HorizontalAlignment="Left" ShowInTaskbar="False" ContentRendered="Window_ContentRendered">
     <WPFTool:BusyIndicator Name="BusyIndicator">
     <Grid>
@@ -23,8 +23,8 @@
             <dxg:GridColumn FieldName="CustomerId" Visible="False" />
             <dxg:GridColumn FieldName="ReferenceNumber" Header="Reference Number" Width="auto" />
             <dxg:GridColumn FieldName="OrderValueString" Header="Order Value" Width="auto" />
-            <dxg:GridColumn FieldName="OrderDateString" Header="Order Date" Width="auto"/>
-            <dxg:GridColumn FieldName="CustomerName"  Width="auto"/>
+            <dxg:GridColumn FieldName="OrderDateString" Header="Order Date" Width="200"/>
+            <dxg:GridColumn FieldName="CustomerName"  Width="200"/>
             <dxg:GridColumn Width="auto">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
