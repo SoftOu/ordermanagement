@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commmon\GenericRepository.cs" />
-    <Compile Include="Commmon\OrderManagementUnitOfWork.cs" />
-    <Compile Include="Commmon\UnitOfWork.cs" />
+    <Compile Include="Common\GenericRepository.cs" />
+    <Compile Include="Common\OrderManagementUnitOfWork.cs" />
+    <Compile Include="Common\UnitOfWork.cs" />
     <Compile Include="Customer.cs">
       <DependentUpon>OrderManagementEntity.tt</DependentUpon>
     </Compile>
