@@ -1,4 +1,5 @@
-﻿using OrderManagement.DataLayer.Repository.Interface;
+﻿using OrderManagement.DataLayer.Commmon;
+using OrderManagement.DataLayer.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,14 @@ namespace OrderManagement.DataLayer.Repository
         /// <returns></returns>
         public Order GetOrderById(Guid id)
         {
-            using (OrdersEntities context = new OrdersEntities())
-            {
-                // Do some work with the dragon.
-                // Check business rules.
-                return context.Orders.FirstOrDefault(x => x.Id == id);
-            }
+            var unitOfWork = new OrderManagementUnitOfWork();
+            return unitOfWork.Orders.GetById(id);
+            //using (OrdersEntities context = new OrdersEntities())
+            //{
+            //    // Do some work with the dragon.
+            //    // Check business rules.
+            //    return context.Orders.FirstOrDefault(x => x.Id == id);
+            //}
 
         }
 

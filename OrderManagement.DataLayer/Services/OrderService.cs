@@ -1,25 +1,22 @@
-﻿using OrderManagement.DataLayer.Repository.Interface;
-using OrderManagement.DataLayer.Repository;
-using OrderManagement.DataLayer.Services.Interface;
+﻿using OrderManagement.DataLayer.Services.Interface;
 using OrderManagement.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using OrderManagement.DataLayer.Commmon;
 
 namespace OrderManagement.DataLayer.Services
 {
     public class OrderService : IOrderService
     {
-        IOrderRepository _orderRepository;
-        ICustomerRepository _customerRepository;
+        private IOrderManagementUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Service call cunstructor.
         /// </summary>
         public OrderService()
         {
-            _orderRepository = new OrderRepository();
-            _customerRepository = new CustomerRepository();
+            _unitOfWork = new OrderManagementUnitOfWork();
         }
 
         /// <summary>
@@ -28,13 +25,13 @@ namespace OrderManagement.DataLayer.Services
         /// <returns></returns>
         public List<OrderViewModel> GetOrders()
         {
-            List<OrderViewModel> listOrders = new List<OrderViewModel>();
-            var orders = _orderRepository.GetOrders();
-            if (orders != null && orders.Count > 0)
+            var ordersVm = new List<OrderViewModel>();
+            var orders = _unitOfWork.Orders.Get();
+            if (orders != null && orders.Count() > 0)
             {
-                listOrders = orders.Select(GetOrderVm).ToList();
+                ordersVm = orders.Select(GetOrderVm).ToList();
             }
-            return listOrders;
+            return ordersVm;
         }
 
         /// <summary>

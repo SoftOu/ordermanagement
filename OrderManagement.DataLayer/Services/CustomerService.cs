@@ -1,5 +1,4 @@
-﻿using OrderManagement.DataLayer.Repository;
-using OrderManagement.DataLayer.Repository.Interface;
+﻿using OrderManagement.DataLayer.Commmon;
 using OrderManagement.DataLayer.Services.Interface;
 using OrderManagement.Models;
 using System;
@@ -8,13 +7,14 @@ namespace OrderManagement.DataLayer.Services
 {
     public class CustomerService : ICustomerService
     {
-        ICustomerRepository _customerRepository;
+        private IOrderManagementUnitOfWork _unitOfWork;
+
         /// <summary>
         /// Service call cunstructor.
         /// </summary>
         public CustomerService()
         {
-            _customerRepository = new CustomerRepository();
+            _unitOfWork = new OrderManagementUnitOfWork();
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace OrderManagement.DataLayer.Services
         /// <returns></returns>
         public Customer GetCustomerById(Guid id)
         {
-            return _customerRepository.GetCustomerById(id);
+            return _unitOfWork.Customers.GetById(id);
         }
 
         /// <summary>
@@ -34,18 +34,20 @@ namespace OrderManagement.DataLayer.Services
         /// <returns></returns>
         public bool UpdateCustomer(CustomerViewModel customer)
         {
-            Customer dbCustomer = new Customer()
-            {
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Id = customer.Id
-            };
-           
             if (!string.IsNullOrEmpty(customer.FirstName) && !string.IsNullOrEmpty(customer.LastName))
-                return _customerRepository.UpdateCustomer(dbCustomer);
+            {
+                //var dbCustomer = _unitOfWork.Customers.GetById(Guid.Parse("88a96958-a302-4913-9adc-1997b49c7571"));
+                var dbCustomer = _unitOfWork.Customers.GetById(customer.Id);
+                dbCustomer.FirstName = customer.FirstName;
+                dbCustomer.LastName = customer.LastName;
+                _unitOfWork.Customers.Update(dbCustomer);
+                var affectedRows = _unitOfWork.SaveChanges();
+                return affectedRows > 0;
+            }
             else
+            {
                 return false;
-
+            }
         }
     }
 }
